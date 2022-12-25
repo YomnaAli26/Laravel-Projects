@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class AdminMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        if(Auth::check())
+        {
+            if(Auth::user()->role_as == '1')#0 for User ,and 1 for Admin
+            {
+                return $next($request);
+            }
+            else
+            {
+                return redirect('/')->with('status','Acess Denied! as are not as Admin');
+            }
+
+        }
+        else
+        {
+            return redirect('/')->with('status','Please Login First');
+        }
+
+    }
+}
