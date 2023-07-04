@@ -1,0 +1,57 @@
+
+   ErrorException 
+
+  file_put_contents(C:\xampp\htdocs\Graduation-Project\database/seeders/post_likes::factory()-;.php): failed to open stream: No such file or directory
+
+  at C:\xampp\htdocs\Graduation-Project\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php:187
+    183▕      * @return int|bool
+    184▕      */
+    185▕     public function put($path, $contents, $lock = false)
+    186▕     {
+  ➜ 187▕         return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
+    188▕     }
+    189▕ 
+    190▕     /**
+    191▕      * Write the contents of a file, replacing it atomically if it already exists.
+
+  1   C:\xampp\htdocs\Graduation-Project\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php:187
+      file_put_contents("C:\xampp\htdocs\Graduation-Project\database/seeders/post_likes::factory()-;.php", "<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class post_likes::factory()-; extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+    }
+}
+")
+
+  2   C:\xampp\htdocs\Graduation-Project\vendor\laravel\framework\src\Illuminate\Console\GeneratorCommand.php:164
+      Illuminate\Filesystem\Filesystem::put("C:\xampp\htdocs\Graduation-Project\database/seeders/post_likes::factory()-;.php", "<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class post_likes::factory()-; extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+    }
+}
+")
