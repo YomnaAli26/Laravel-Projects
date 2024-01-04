@@ -30,7 +30,12 @@ class CheckoutController extends Controller
         //Database Transaction
         DB::beginTransaction();
         try {
-            $request->validate([]);
+            $request->validate([
+                'address.billing.first_name' => ['required','string','max:255'],
+                'address.billing.last_name' => ['required','string','max:255'],
+                'address.billing.phone_number' => ['required','string','max:255'],
+                'address.billing.city' => ['required','string','max:255'],
+            ]);
             $items = $cart->get()->groupBy('product.store_id')->all();
             foreach ($items as $store_id =>$cart_items)
             {
