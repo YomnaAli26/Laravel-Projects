@@ -29,7 +29,11 @@ class OrderCreatedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
+<<<<<<< HEAD
         return ['mail','database'];
+=======
+        return ['mail'];
+>>>>>>> d7c37c6a367d3bba9d45e42ed7a8bc95e7e6be86
 //        $channels = ['database'];
 //        if ($notifiable->notification_preferences['order_created']['sms'] ?? false)
 //        {
@@ -64,6 +68,7 @@ class OrderCreatedNotification extends Notification
             ->line('Thank you for using our application!');
     }
 
+<<<<<<< HEAD
     public function ToDatabase(object $notifiable)
     {
         $address = $this->order->billingAddress;
@@ -75,6 +80,8 @@ class OrderCreatedNotification extends Notification
         ];
     }
 
+=======
+>>>>>>> d7c37c6a367d3bba9d45e42ed7a8bc95e7e6be86
     /**
      * Get the array representation of the notification.
      *
