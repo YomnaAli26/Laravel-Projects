@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 @section("page_header","Edit Category")
 @section("page_name")
     @parent

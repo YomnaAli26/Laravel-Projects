@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 @section("page_header","Edit Profile")
 @section("page_name")
     @parent
@@ -30,7 +30,8 @@
 
             <div class="col-md-6">
                 <x-form.label id="gender">Gender</x-form.label>
-                <x-form.radio name="gender" :options="['male'=>'Male','female'=>'Female']" :checked="$user->profile->gender"/>
+                <x-form.radio name="gender" :options="['male'=>'Male','female'=>'Female']"
+                              :checked="$user->profile->gender"/>
             </div>
         </div>
 
@@ -47,7 +48,7 @@
 
             <div class="col-md-4">
                 <x-form.label id="postal_code">Postal Code</x-form.label>
-                <x-form.input  name="postal_code" :value="$user->profile->postal_code"/>
+                <x-form.input name="postal_code" :value="$user->profile->postal_code"/>
             </div>
 
         </div>
@@ -55,7 +56,7 @@
         <div class="form-row">
             <div class="col-md-4">
                 <x-form.label id="state">State</x-form.label>
-                <x-form.input  name="state" :value="$user->profile->state"/>
+                <x-form.input name="state" :value="$user->profile->state"/>
             </div>
 
             <div class="col-md-4">
@@ -65,7 +66,7 @@
 
             <div class="col-md-4">
                 <x-form.label id="locale">Locale</x-form.label>
-                <x-form.select name="locale" :options="$locales" :selected="$user->profile->locale" />
+                <x-form.select name="locale" :options="$locales" :selected="$user->profile->locale"/>
             </div>
 
         </div>

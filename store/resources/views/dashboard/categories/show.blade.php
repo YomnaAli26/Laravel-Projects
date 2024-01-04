@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 @section("page_header","$category->name")
 @section("page_name")
     @parent
@@ -18,7 +18,7 @@
         </thead>
         <tbody>
         @php
-        $products = $category->products()->with('store')->latest()->paginate(1);
+            $products = $category->products()->with('store')->latest()->paginate(1);
         @endphp
         @forelse($category->products()->with('store')->paginate(1) as $product)
             <tr>
@@ -26,7 +26,7 @@
                 <td>{{ $product->store->name }}</td>
                 <td>{{ $product->status }}</td>
                 <td>{{ $product->created_at }}</td>
-                <td><img src="{{ asset('storage/'.$product->image) }}"  height="50" alt=""></td>
+                <td><img src="{{ asset('storage/'.$product->image) }}" height="50" alt=""></td>
             </tr>
         @empty
             <tr>
