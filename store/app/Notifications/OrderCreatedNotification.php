@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -13,6 +14,8 @@ class OrderCreatedNotification extends Notification
     use Queueable;
 
     protected $order;
+    protected $address;
+
 
     /**
      * Create a new notification instance.
@@ -20,6 +23,8 @@ class OrderCreatedNotification extends Notification
     public function __construct(Order $order)
     {
         $this->order = $order;
+        $this->address = $this->order->billingAddress;
+
     }
 
     /**
@@ -29,11 +34,7 @@ class OrderCreatedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-<<<<<<< HEAD
-        return ['mail','database'];
-=======
-        return ['mail'];
->>>>>>> d7c37c6a367d3bba9d45e42ed7a8bc95e7e6be86
+        return ['mail','database','broadcast'];
 //        $channels = ['database'];
 //        if ($notifiable->notification_preferences['order_created']['sms'] ?? false)
 //        {
@@ -58,30 +59,38 @@ class OrderCreatedNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $address = $this->order->billingAddress;
         return (new MailMessage)
             ->subject("New Order #{$this->order->number}")
             ->greeting("Hi {$notifiable->name},")
-            ->line("A new order #{$this->order->number} created by {$address->name}
-                    from {$address->country_name}.")
+            ->line("A new order #{$this->order->number} created by {$this->address->name}
+                    from {$this->address->country_name}.")
             ->action('View Order', url('/dashboard'))
             ->line('Thank you for using our application!');
     }
 
-<<<<<<< HEAD
+
     public function ToDatabase(object $notifiable)
     {
-        $address = $this->order->billingAddress;
         return[
-          'title'=>  "A new order #{$this->order->number} created.",
+            'title'=>  "A new order #{$this->order->number} created.",
             'icon'=>'far fa-file',
             'url'=>url('/dashboard'),
             'order_id'=>$this->order->id
         ];
     }
 
-=======
->>>>>>> d7c37c6a367d3bba9d45e42ed7a8bc95e7e6be86
+    public function ToBroadcast(object $notifiable)
+    {
+        return new BroadcastMessage(
+            [
+                'title'=>  "A new order #{$this->order->number} created by {$this->address->name} from {$this->address->country_name}.",
+                'icon'=>'far fa-file',
+                'url'=>url('/dashboard'),
+                'order_id'=>$this->order->id
+            ]
+        );
+    }
+
     /**
      * Get the array representation of the notification.
      *

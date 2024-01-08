@@ -28,12 +28,8 @@ class EventServiceProvider extends ServiceProvider
 //        ],
        OrderCreated::class=>[
             DeductProductQuantity::class,
-<<<<<<< HEAD
             EmptyCart::class,
-=======
-//            EmptyCart::class,
->>>>>>> d7c37c6a367d3bba9d45e42ed7a8bc95e7e6be86
-           SendOrderCreatedNotification::class,
+            SendOrderCreatedNotification::class,
         ],
     ];
 
