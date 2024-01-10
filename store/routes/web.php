@@ -5,6 +5,7 @@ use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,11 +25,13 @@ Route::get('/products/{product:slug}',[ProductController::class,'show'])->name('
 Route::resource('/cart',CartController::class);
 Route::get('/checkout',[CheckoutController::class,'create'])->name('checkout.create');
 Route::post('/checkout',[CheckoutController::class,'store'])->name('checkout.store');
+Route::view('auth/user/2fa','front.auth.two-factor-auth')->name('auth.2fa');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 //require __DIR__.'/auth.php';
