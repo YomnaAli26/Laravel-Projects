@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartRepository;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -30,5 +31,7 @@ AppServiceProvider extends ServiceProvider
             return ! in_array(strtolower($value),$params);
         },'this name is forbiden ');
         Paginator::useBootstrap();
+        JsonResource::withoutWrapping();
     }
+
 }
