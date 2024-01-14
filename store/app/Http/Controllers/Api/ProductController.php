@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index','show']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +23,7 @@ class ProductController extends Controller
         $products =  Product::filter($request->query())
             ->with('category:id','store:id,name','tags:id,name')
             ->paginate();
+
         return ProductResource::collection($products);
     }
 
@@ -37,8 +43,15 @@ class ProductController extends Controller
               'price'=>['required','numeric','min:0'],
               'compare_price'=>['nullable','numeric','gt:price']
           ]);
+        $user = $request->user();
+        if (!$user->tokenCan('products.create'))
+        {
+            return Response::json([
+                'message'=>'Not Allowed'
+            ],400);
+        }
         $product = Product::create($request->all());
-        return $product;
+        return Response::json($product,20);
     }
 
     /**
@@ -66,6 +79,13 @@ class ProductController extends Controller
                 'price'=>['sometimes','required','numeric','min:0'],
                 'compare_price'=>['nullable','numeric','gt:price']
             ]);
+        $user = $request->user();
+        if (!$user->tokenCan('products.update'))
+        {
+            return Response::json([
+                'message'=>'Not Allowed'
+            ],400);
+        }
         $product->update($request->all());
         return Response::json($product);
 
@@ -76,6 +96,13 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
+        $user = Auth::guard('sanctum')->user();
+        if (!$user->tokenCan('products.delete'))
+        {
+            return Response::json([
+                'message'=>'Not Allowed'
+            ],400);
+        }
         Product::destroy($id);
         return response()->json(['message'=>'Post Deleted Successfully']);
     }
