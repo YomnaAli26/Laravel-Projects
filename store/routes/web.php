@@ -6,8 +6,8 @@ use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,16 +19,23 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function(){
+    Route::get('/', [HomeController::class,'index'])->name('home');
+    Route::get('/products',[ProductController::class,'index'])->name('products.index');
+    Route::get('/products/{product:slug}',[ProductController::class,'show'])->name('products.show');
+    Route::resource('/cart',CartController::class);
+    Route::get('/checkout',[CheckoutController::class,'create'])->name('checkout.create');
+    Route::post('/checkout',[CheckoutController::class,'store'])->name('checkout.store');
+    Route::view('auth/user/2fa','front.auth.two-factor-auth')->name('auth.2fa');
+    Route::post('currency',[CurrencyConverterController::class,'store'])
+        ->name('currency.store');
 
-Route::get('/', [HomeController::class,'index'])->name('home');
-Route::get('/products',[ProductController::class,'index'])->name('products.index');
-Route::get('/products/{product:slug}',[ProductController::class,'show'])->name('products.show');
-Route::resource('/cart',CartController::class);
-Route::get('/checkout',[CheckoutController::class,'create'])->name('checkout.create');
-Route::post('/checkout',[CheckoutController::class,'store'])->name('checkout.store');
-Route::view('auth/user/2fa','front.auth.two-factor-auth')->name('auth.2fa');
-Route::post('currency',[CurrencyConverterController::class,'store'])
-    ->name('currency.store');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

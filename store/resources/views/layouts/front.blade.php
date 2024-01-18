@@ -64,16 +64,28 @@
                             </li>
                             <li>
                                 <div class="select-position">
-                                    <select id="select5">
-                                        <option value="0" selected>English</option>
-                                        <option value="1">Español</option>
-                                        <option value="2">Filipino</option>
-                                        <option value="3">Français</option>
-                                        <option value="4">العربية</option>
-                                        <option value="5">हिन्दी</option>
-                                        <option value="6">বাংলা</option>
+
+                                    <select name="locale" id="select5" onchange="location = this.value;">
+                                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode=>$properties )
+
+                                            <option value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" @selected($localeCode == App::currentLocale())>
+                                                {{$properties['native']}}
+                                            </option>
+
+                                        @endforeach
+
                                     </select>
+{{--                                    <ul class="select-position">--}}
+{{--                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)--}}
+{{--                                        <li>--}}
+{{--                                            <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">--}}
+{{--                                                {{ $properties['native'] }}--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
                                 </div>
+
                             </li>
                         </ul>
                     </div>
@@ -81,9 +93,9 @@
                 <div class="col-lg-4 col-md-4 col-12">
                     <div class="top-middle">
                         <ul class="useful-links">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about-us.html">About Us</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="index.html">{{__('Home')}}</a></li>
+                            <li><a href="about-us.html">{{ __('About') }}</a></li>
+                            <li><a href="contact.html">{{__('Contact Us')}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -95,7 +107,7 @@
                                 <div class="dropdown show" >
                                     <a class="btn btn-secondary dropdown-toggle" style="background-color: #0a001f" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="lni lni-user"></i>
-                                        {{Auth::guard('web')->user()->name}}
+                                         {{ Auth::guard('web')->user()->name}}
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="{{ route('auth.2fa') }}">Enable 2FA</a>
@@ -105,7 +117,7 @@
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout').submit()">Sign Out</a>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout').submit()">{{ __('Sign Out') }}</a>
                                     <form action="{{ route('logout') }}"  id="logout" method="post">
                                         @csrf
                                     </form>
@@ -119,10 +131,10 @@
                         @else
                             <ul class="user-login">
                                 <li>
-                                    <a href="{{route('login')}}">Sign In</a>
+                                    <a href="{{route('login')}}">{{__('Sign In')}}</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('register')}}">Register</a>
+                                    <a href="{{route('register')}}">{{__('Register')}}</a>
                                 </li>
                             </ul>
                         @endauth

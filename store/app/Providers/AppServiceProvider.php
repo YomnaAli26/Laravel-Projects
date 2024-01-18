@@ -7,6 +7,7 @@ use App\Repositories\Cart\CartRepository;
 use App\Services\CurrencyConverter;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +32,7 @@ AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Validator::extend('filter',function ($attribute,$value,$params){
             return ! in_array(strtolower($value),$params);
         },'this name is forbiden ');
