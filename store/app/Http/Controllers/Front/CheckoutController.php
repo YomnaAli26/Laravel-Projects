@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrderAddress;
+
 use App\Models\OrderItem;
 use App\Repositories\Cart\CartRepository;
 use Illuminate\Http\Request;

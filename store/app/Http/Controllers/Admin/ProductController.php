@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -17,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-
+        Gate::authorize('products.view');
         $products = Product::with(['store','category'])->paginate();
         return view('dashboard.products.index', compact('products'));
     }
@@ -51,6 +52,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
+        Gate::authorize('products.update');
+
         $product = Product::findOrFail($id);
         $categories = Category::all();
         $tags = implode(',',$product->tags()->pluck('name')->toArray());
@@ -64,6 +67,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        Gate::authorize('products.update');
 
         $product->update($request->except('tags'));
         $tags =json_decode($request->post('tags'));

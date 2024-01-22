@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class Sidebar extends Component
@@ -14,7 +15,7 @@ class Sidebar extends Component
      */
     public function __construct()
     {
-        $this->items = config('sidebar');
+        $this->items = $this->prepareItems(config('sidebar'));
     }
 
     /**
@@ -23,5 +24,21 @@ class Sidebar extends Component
     public function render(): View|Closure|string
     {
         return view('components.sidebar');
+    }
+
+    public function prepareItems($items)
+    {
+
+        $user = Auth::user();
+        foreach ($items as $key=>$item)
+        {
+
+            if (isset($item['ability']) && !$user->can($item['ability']))
+            {
+                unset($items[$key]);
+            }
+
+        }
+        return $items;
     }
 }

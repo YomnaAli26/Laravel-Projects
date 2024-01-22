@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,8 +20,28 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register any authentication / authorization services.
      */
+    public function register()
+    {
+        parent::register();
+        $this->app->bind('abilities',function (){
+            return include base_path('app/data/abilities.php');
+        });
+    }
     public function boot(): void
     {
-        //
+
+        Gate::before(function ($user,$ability){
+            if ($user->super_admin)
+            {
+                return true;
+            }
+        });
+        foreach($this->app->make('abilities') as $ability=>$value)
+        {
+            Gate::define($ability,function ($user) use ($ability){
+                return $user->hasAbility($ability);
+            });
+        }
+
     }
 }

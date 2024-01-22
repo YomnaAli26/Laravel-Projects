@@ -67,7 +67,6 @@
 
                                     <select name="locale" id="select5" onchange="location = this.value;">
                                         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode=>$properties )
-
                                             <option value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" @selected($localeCode == App::currentLocale())>
                                                 {{$properties['native']}}
                                             </option>

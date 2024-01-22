@@ -6,7 +6,7 @@
         @foreach($items as $item)
         <li class="nav-item menu-open">
             <a href="{{route($item['route'])}}" class="nav-link {{Route::is($item['active'])?'active':''}}">
-                <i class="{{$item['icon']}}"></i>
+                <i class="{{$item['icon']}}" ></i>
                 <p>
                     {{$item['title']}}
                     @if(isset($item['badge']))
