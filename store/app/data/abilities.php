@@ -31,6 +31,8 @@ return
     'roles.create'=>__('Create roles'),
     'roles.update'=>__('Update roles'),
     'roles.delete'=>__('Delete roles'),
+    'roles.restore'=>__('Restore roles'),
+    'roles.force-delete'=>__('Force delete roles'),
 
 
 ];

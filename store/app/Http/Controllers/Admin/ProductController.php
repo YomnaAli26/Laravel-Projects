@@ -7,18 +7,19 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Product::class);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('products.view');
         $products = Product::with(['store','category'])->paginate();
         return view('dashboard.products.index', compact('products'));
     }
@@ -28,7 +29,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create',Product::class);
+
     }
 
     /**
@@ -36,15 +38,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create',Product::class);
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        $this->authorize('view',$product);
+
     }
 
     /**
@@ -52,9 +56,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        Gate::authorize('products.update');
-
         $product = Product::findOrFail($id);
+        $this->authorize('update',$product);
+
         $categories = Category::all();
         $tags = implode(',',$product->tags()->pluck('name')->toArray());
         return view('dashboard.products.edit',
@@ -67,8 +71,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        Gate::authorize('products.update');
-
+        $this->authorize('update',$product);
         $product->update($request->except('tags'));
         $tags =json_decode($request->post('tags'));
         $tag_ids = [];
@@ -118,6 +121,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $this->authorize('delete',$product);
     }
 }

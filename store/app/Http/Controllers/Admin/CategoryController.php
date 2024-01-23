@@ -11,15 +11,15 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Category::class);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        if (!Gate::allows('categories.view'))
-        {
-            abort(403);
-        }
         //SELECT child.* ,parent.name as parent_name FROM categories as child
         //leftjoin categories as parent ON  parent.id = child.parent_id
         $categories = Category::with('parent')
@@ -42,10 +42,6 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        if (Gate::denies('categories.create'))
-        {
-            abort(403);
-        }
         $parents = Category::all();
         $category = new Category();
         return view("dashboard.categories.create",compact('parents','category'));
@@ -57,10 +53,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if (Gate::denies('categories.create'))
-        {
-            abort(403);
-        }
         $request->validate(Category::rules());
         $data = $request->except('image');
         $request->merge(['slug'=>Str::slug($request->post('name'))]);
@@ -78,7 +70,6 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        Gate::authorize('categories.view');
         return view('dashboard.categories.show',compact('category'));
     }
 
@@ -87,7 +78,6 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        Gate::authorize('categories.update');
         //SELECT * FROM categories WHERE id <> $id AND
         //(parent_id IS NULL OR parent_id <> $id)
         $parents = Category::where('id','<>',$id)
@@ -105,8 +95,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Gate::authorize('categories.update');
-
         $request->validate(Category::rules($id));
         $category = Category::findorFail($id);
         $old_image = $category->image;
@@ -131,8 +119,6 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        Gate::authorize('categories.delete');
-
         $category->delete();
         return redirect()->route('dashboard.categories.index')
             ->with('success','Category deleted!');

@@ -6,7 +6,9 @@
 @endsection
 @section('content')
     <div class="mb-5">
+        @can('create','App\Models\User')
         <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary mr-2">Create User</a>
+        @endcan
     </div>
     <x-alert type="success"/>
     <table class="table">
@@ -38,13 +40,13 @@
                 <td>{{implode('-',$user->roles()->pluck('name')->toArray())}}</td>
 
                 <td>
-                    @can('users.update')
+                    @can('update',$user)
                         <a href="{{ route('dashboard.users.edit',$user->id) }}"
                         class="btn btn-sm btn-outline-success">Edit</a>
                     @endcan
                 </td>
                 <td>
-                    @can('users.delete')
+                    @can('delete',$user)
                         <form action="{{ route('dashboard.users.destroy',$user->id) }}" method="post">
                             @csrf
                             @method('DELETE')

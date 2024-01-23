@@ -6,7 +6,7 @@
 @endsection
 @section('content')
     <div class="mb-5">
-        @can('categories.create')
+        @can('create','App\Models\Category')
         <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary mr-2">Create Category</a>
         @endcan
         <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-dark">Trash Categories</a>
@@ -48,13 +48,13 @@
                 <td>{{ $category->created_at }}</td>
                 <td><img src="{{ asset('storage/'.$category->image) }}" height="50" alt=""></td>
                 <td>
-                    @can('categories.update')
+                    @can('update',$category)
                     <a href="{{ route('dashboard.categories.edit',$category->id) }}"
                        class="btn btn-sm btn-outline-success">Edit</a>
                     @endcan
                 </td>
                 <td>
-                    @can('categories.delete')
+                    @can('delete',$category)
                     <form action="{{ route('dashboard.categories.destroy',$category->id) }}" method="post">
                         @csrf
                         @method('DELETE')

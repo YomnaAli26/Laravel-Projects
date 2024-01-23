@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleAbilityRequest;
 use App\Models\Role;
-use Illuminate\Support\Facades\Gate;
 
-class RoleAbilityController extends Controller
+class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Role::class);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('roles.view');
         $roles = Role::paginate();
         return view('dashboard.roles.index',compact('roles'));
     }
@@ -24,7 +26,6 @@ class RoleAbilityController extends Controller
      */
     public function create()
     {
-        Gate::authorize('roles.create');
         return view('dashboard.roles.create',[
             'role'=>new Role(),
         ]);
@@ -36,7 +37,6 @@ class RoleAbilityController extends Controller
      */
     public function store(RoleAbilityRequest $request)
     {
-        Gate::authorize('roles.create');
         Role::createRoleAbilities($request);
         return redirect()
             ->route('dashboard.roles.index')
@@ -57,8 +57,6 @@ class RoleAbilityController extends Controller
      */
     public function edit(Role $role)
     {
-        Gate::authorize('roles.update');
-
         $role_abilities = $role->abilities()->pluck('type','ability')->toArray();
         return view('dashboard.roles.edit',compact('role','role_abilities'));
     }
@@ -68,7 +66,6 @@ class RoleAbilityController extends Controller
      */
     public function update(RoleAbilityRequest $request,Role $role)
     {
-        Gate::authorize('roles.update');
         $role->updateRoleAbilities($request);
         return redirect()
             ->route('dashboard.roles.index')
@@ -80,8 +77,6 @@ class RoleAbilityController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize('roles.delete');
-
         Role::destroy($id);
         return redirect()
             ->route('dashboard.roles.index')

@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class Sidebar extends Component
@@ -28,14 +29,12 @@ class Sidebar extends Component
 
     public function prepareItems($items)
     {
-
         $user = Auth::user();
         foreach ($items as $key=>$item)
         {
-
             if (isset($item['ability']) && !$user->can($item['ability']))
             {
-                unset($items[$key]);
+               unset($item[$key]);
             }
 
         }

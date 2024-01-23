@@ -6,8 +6,9 @@
 @endsection
 @section('content')
     <div class="mb-5">
+        @can('create','App\Models\Product')
         <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary mr-2">Create Product</a>
-
+        @endcan
     </div>
     <x-alert type="success"/>
     <form action="{{URL::current()}}" method="get" class="d-flex justify-content-between mb-4">
@@ -42,15 +43,19 @@
                 <td>{{ $product->created_at }}</td>
                 <td><img src="{{ asset('storage/'.$product->image) }}" height="50" alt=""></td>
                 <td>
+                    @can('update',$product)
                     <a href="{{ route('dashboard.products.edit',$product->id) }}"
                        class="btn btn-sm btn-outline-success">Edit</a>
+                    @endcan
                 </td>
                 <td>
+                    @can('delete',$product)
                     <form action="{{ route('dashboard.products.destroy',$product->id) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                     </form>
+                    @endcan
                 </td>
             </tr>
         @empty

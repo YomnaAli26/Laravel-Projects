@@ -13,15 +13,17 @@ use Illuminate\Validation\Rules\Password;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Admin::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('admins.view');
-
         $admins = Admin::paginate();
-
         return view('dashboard.admins.index',compact('admins'));
     }
 
@@ -30,7 +32,6 @@ class AdminController extends Controller
      */
     public function create()
     {
-        Gate::authorize('admins.create');
         $admin =new Admin();
         $roles = Role::all();
         return view(
@@ -45,8 +46,6 @@ class AdminController extends Controller
      */
     public function store(AdminRequest $request)
     {
-        Gate::authorize('admins.create');
-
             $admin = Admin::create($request->all());
             $admin->roles()->attach($request->roles);
             return redirect()->route('dashboard.admins.index')
@@ -67,8 +66,6 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        Gate::authorize('admins.update');
-
         $roles = Role::all();
         return view(
             'dashboard.admins.edit',
@@ -82,7 +79,6 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        Gate::authorize('admins.update');
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
@@ -103,7 +99,6 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize('admins.delete');
         Admin::destroy($id);
         return redirect()->route('dashboard.admins.index')
             ->with('success','Admin deleted successfully');

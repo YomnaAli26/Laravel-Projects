@@ -12,13 +12,15 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('users.view');
-
         $users = User::paginate();
         return view('dashboard.users.index',compact('users'));
     }
@@ -28,8 +30,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        Gate::authorize('users.create');
-
         $user =new User();
         $roles = Role::all();
         return view(
@@ -43,7 +43,6 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        Gate::authorize('users.create');
         $user = User::query()->create($request->all());
         $user->roles()->attach($request->roles);
         return redirect()->route('dashboard.users.index')
@@ -63,7 +62,6 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        Gate::authorize('users.update');
         $roles = Role::all();
         return view(
             'dashboard.users.edit',
@@ -76,7 +74,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        Gate::authorize('users.update');
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255',],
@@ -94,7 +91,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize('users.delete');
 
         User::destroy($id);
         return redirect()->route('dashboard.users.index')
