@@ -9,6 +9,8 @@
         @can('create','App\Models\Product')
         <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary mr-2">Create Product</a>
         @endcan
+            <a href="{{ route('dashboard.products.import') }}" class="btn btn-primary mr-2">Import Products</a>
+
     </div>
     <x-alert type="success"/>
     <form action="{{URL::current()}}" method="get" class="d-flex justify-content-between mb-4">
