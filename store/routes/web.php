@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\CurrencyConverterController;
@@ -36,13 +37,9 @@ Route::group(
 
 });
 
+Route::get('auth/{provider}/redirect',[SocialLoginController::class,'redirect'])
+    ->name('auth.socialite.redirect');
+Route::get('auth/{provider}/callback',[SocialLoginController::class,'callback'])
+    ->name('auth.socialite.callback');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-});
-
-//require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

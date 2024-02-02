@@ -162,6 +162,7 @@ return [
          * Package Service Providers...
          */
         Barryvdh\Debugbar\ServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -185,7 +186,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Currency'=> \App\Helpers\Currency::class
+        'Currency'=> \App\Helpers\Currency::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 
 ];

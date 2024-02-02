@@ -34,4 +34,22 @@ return [
       'api_key'=> env('CURRENCY_CONVERTER_API_KEY')
     ],
 
+    'google'=>[
+        'client_id'=>env('GOOGLE_CLIENT_ID'),
+        'client_secret'=>env('GOOGLE_CLIENT_SECRET'),
+        'redirect'=>env('APP_URL').'/auth/google/callback',
+    ],
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('APP_URL').'/auth/facebook/callback',
+    ],
+    'twitter' => [
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect' => env('APP_URL').'/auth/twitter/callback',
+    ],
+
+
+
 ];
