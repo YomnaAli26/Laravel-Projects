@@ -25,6 +25,9 @@ AppServiceProvider extends ServiceProvider
         $this->app->bind('currency.converter',function (){
             return new CurrencyConverter(config('services.currency.api_key'));
         });
+        $this->app->bind('stripe.client', function() {
+            return new \Stripe\StripeClient(config('services.stripe.secret_key'));
+        });
     }
 
     /**

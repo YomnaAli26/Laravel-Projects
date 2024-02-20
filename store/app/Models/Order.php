@@ -51,6 +51,11 @@ class Order extends Model
             ->where('type','shipping');
 
     }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class,'order_id');
+    }
     public static function booted()
     {
         static::creating(function (Order $order){
