@@ -56,6 +56,11 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class,'order_id');
     }
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
+    }
     public static function booted()
     {
         static::creating(function (Order $order){

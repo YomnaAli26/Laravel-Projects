@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AccessTokensController;
+use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,3 +27,6 @@ Route::post('auth/access-token',[AccessTokensController::class,'store'])
 ->middleware('guest:sanctum');
 Route::delete('auth/access-token/{token?}',[AccessTokensController::class,'destroy'])
     ->middleware('auth:sanctum');
+
+Route::put('deliveries/{delivery}',[DeliveryController::class,'update']);
+Route::get('deliveries/{delivery}',[DeliveryController::class,'show']);
